@@ -405,6 +405,7 @@ class Skype {
 
                   $Code .= '<div class="text-end text-muted message-label">'.$this->Time->FormatDate ($Message['DMessage'], 'H:i').'</div>
                             <div class="text-end pb-1"><span class="py-2 px-3 d-inline-block rounded text-wrap text-break message" style="background: #e3f2fd">'.$Message['Content'].'</span></div>';
+
                }
             }
          }
