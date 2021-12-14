@@ -360,7 +360,7 @@ class Skype {
 
          $Id++;
 
-         if ($Id == 1) $Class = 'active';
+         if ($Id == 1) $Class = 'active navbar-light';
          else          $Class = '';
 
          $Code .= '<a class="nav-link '.$Class.'" id="v-pills-'.$Id.'-tab" href="#v-pills-'.$Id.'" data-bs-toggle="pill" role="tab">
@@ -378,7 +378,7 @@ class Skype {
       $Id = 0;
 
       $Code .= '<div class="col-9">
-                  <div class="tab-content" id="v-pills-tabContent">';
+                  <div class="tab-content shadow p-3 rounded" id="v-pills-tabContent">';
 
       foreach ($Conversations as $ConversationId => $ConversationData) {
 
@@ -387,8 +387,8 @@ class Skype {
          if ($Id == 1) $Class = 'show active';
          else          $Class = '';
 
-         $Code .= '<div class="tab-pane fade '.$Class.'" id="v-pills-'.$Id.'" data-bs-toggle="tab" role="tabpanel">
-                  <div class="border border-primary h3">'.$ConversationData['Name'].'</div>';
+         $Code .= '<div class="tab-pane fade '.$Class.'" id="v-pills-'.$Id. '" data-bs-toggle="tab" role="tabpanel">
+                   <div class="border-bottom h3 pb-3">'.$ConversationData['Name'].'</div>';
 
          if (empty ($ConversationData['MessageList'])) {
 
@@ -400,12 +400,12 @@ class Skype {
 
                if ($Message['From'] == $ConversationId) {
 
-                  $Code .= '<div class="text-start">'.$Message['Name'].' '.$this->Time->FormatDate ($Message['DMessage'], 'H:i:s').
-                           '<br>'.$Message['Content'].'</div>';
+                  $Code .= '<div class="text-start">'.$Message['Name'].' '.$this->Time->FormatDate ($Message['DMessage'], 'H:i:s'). '</div>
+                            <div class="py-2 px-3"><span style="background: #f8f9fa" class="py-2 px-3">'.$Message['Content']. '</span></div>';
                }
                else {
 
-                  $Code .= '<div class="text-end">'.$Message['Content'].'</div>';
+                  $Code .= '<div class="text-end py-2 px-3"><span class="py-2 px-3" style="background: #e3f2fd">'.$Message['Content']. '</span></div>';
                }
             }
          }
