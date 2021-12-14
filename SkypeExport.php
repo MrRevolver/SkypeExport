@@ -350,21 +350,19 @@ class Skype {
       $Code = '';
       $Id = 0;
 
-      $Code .= '<div class="row">
+      $Code .= '<div class="row mt-20">
                   <div class="col-3">
                      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">';
 
-      $ConversationsId = array_keys ($Conversations);
-
-      foreach ($ConversationsId as $ConversationId) {
+      foreach ($Conversations as $ConversationId => $ConversationData) {
 
          $Id++;
 
-         if ($Id == 1) $Class = 'active';
+         if ($Id == 1) $Class = 'active navbar-light';
          else          $Class = '';
 
          $Code .= '<a class="nav-link '.$Class.'" id="v-pills-'.$Id.'-tab" href="#v-pills-'.$Id.'" data-bs-toggle="pill" role="tab">
-                  '.$ConversationId.'</a>';
+                  '.$ConversationData['Name'].'<br><span class="text-muted message-label">'.$ConversationId.'</span></a>';
       }
 
       $Code .= '</div></div>';
@@ -378,7 +376,7 @@ class Skype {
       $Id = 0;
 
       $Code .= '<div class="col-9">
-                  <div class="tab-content" id="v-pills-tabContent">';
+                  <div class="tab-content shadow p-3 rounded" id="v-pills-tabContent">';
 
       foreach ($Conversations as $ConversationId => $ConversationData) {
 
@@ -387,8 +385,8 @@ class Skype {
          if ($Id == 1) $Class = 'show active';
          else          $Class = '';
 
-         $Code .= '<div class="tab-pane fade '.$Class.'" id="v-pills-'.$Id.'" data-bs-toggle="tab" role="tabpanel">
-                  <div class="border border-primary h3">'.$ConversationData['Name'].'</div>';
+         $Code .= '<div class="tab-pane fade '.$Class.'" id="v-pills-'.$Id. '" data-bs-toggle="tab" role="tabpanel">
+                   <div class="border-bottom h3 pb-3">'.$ConversationData['Name'].'</div>';
 
          if (empty ($ConversationData['MessageList'])) {
 
@@ -400,12 +398,13 @@ class Skype {
 
                if ($Message['From'] == $ConversationId) {
 
-                  $Code .= '<div class="text-start">'.$Message['Name'].' '.$this->Time->FormatDate ($Message['DMessage'], 'H:i:s').
-                           '<br>'.$Message['Content'].'</div>';
+                  $Code .= '<div class="text-start text-muted message-label">'.$Message['Name'].' '.$this->Time->FormatDate ($Message['DMessage'], 'H:i').'</div>
+                            <div class="text-start pb-1"><span class="py-2 px-3 d-inline-block rounded text-wrap text-break message" style="background: #f2f6f9">'.$Message['Content'].'</span></div>';
                }
                else {
 
-                  $Code .= '<div class="text-end">'.$Message['Content'].'</div>';
+                  $Code .= '<div class="text-end text-muted message-label">'.$this->Time->FormatDate ($Message['DMessage'], 'H:i').'</div>
+                            <div class="text-end pb-1"><span class="py-2 px-3 d-inline-block rounded text-wrap text-break message" style="background: #e3f2fd">'.$Message['Content'].'</span></div>';
                }
             }
          }

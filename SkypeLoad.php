@@ -3,11 +3,31 @@
    <title>Экспорт сообщений Skype</title>
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+   <style>
+      .message-label {
+         font-size: 12px !important;
+      }
+      .message {
+         max-width: 85%;
+         font-size: 14px;
+      }
+      .nav-link {
+         color: #212529;
+      }
+      .nav-link.active {
+         background-color: #e3f2fd !important;
+         color: #212529 !important;
+      }
+      .nav-link:focus, .nav-link:hover {
+         background-color: #f2f6f9;
+         color: #212529;
+      }
+   </style>
 </head>
 <body>
    <div class="container-fluid">
       <h3>Экспорт сообщений Skype</h3>
-      <p style = "white-space:pre-wrap">
+      <!--<p style = "white-space:pre-wrap">
       Необходимо выполнить экспорт сообщений скайпа, для этого необходимо:
 
       1.	В скайпе перейти в настройки (нажать ... и выбрать пункт Настройки).
@@ -17,7 +37,7 @@
       5.	После этого страницу можно обновить с смотреть статус выполнения запроса.
       6.	Как только запрос на выгрузку будет обработан, нужно скачать файл экспорта и
 
-      </p>
+      </p>-->
 
       <form enctype="multipart/form-data" action="" method="post">
          <input type="hidden" name="MAX_FILE_SIZE" value="100000000000000000" />
