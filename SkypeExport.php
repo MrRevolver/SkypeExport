@@ -350,35 +350,37 @@ class Skype {
       $Code = '';
       $Id = 0;
 
-      $Code .= '<div class="row">
-                  <div class="col-3">
-                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">';
+      $Code .= '<div class="row mt-20">
+                  <div class="col-3 col-xxl-2 flex-column">
+                     <div class="row scroll-list">
+                        <div class="col nav nav-pills" style="padding-right: 0px; display: block;" id="v-pills-tab" role="tablist">';
 
-      $ConversationsId = array_keys ($Conversations);
-
-      foreach ($ConversationsId as $ConversationId) {
+      foreach ($Conversations as $ConversationId => $ConversationData) {
 
          $Id++;
 
-         if ($Id == 1) $Class = 'active navbar-light';
+         if ($Id == 1) $Class = 'active';
          else          $Class = '';
 
          $Code .= '<a class="nav-link '.$Class.'" id="v-pills-'.$Id.'-tab" href="#v-pills-'.$Id.'" data-bs-toggle="pill" role="tab">
-                  '.$ConversationId.'</a>';
+                  '.(!empty ($ConversationData['Name']) ? $ConversationData['Name'] : $ConversationId).'<br><span class="text-muted message-label">'.$ConversationId.'</span></a>';
       }
 
-      $Code .= '</div></div>';
+      $Code .= '        </div>
+                     </div>
+                  </div>';
 
       return $Code;
    }
 
-   function CodeMessages ($Conversations)  // Запись сообщения в базу SkypeExcludeMessage
+   function CodeMessages ($Conversations, $Limit = 50)  // Запись сообщения в базу SkypeExcludeMessage
    {
       $Code = '';
       $Id = 0;
+      $CurrentTime = 0;
 
-      $Code .= '<div class="col-9">
-                  <div class="tab-content shadow p-3 rounded" id="v-pills-tabContent">';
+      $Code .= '<div class="col-9 col-xxl-10">
+                  <div class="tab-content rounded" id="v-pills-tabContent">';
 
       foreach ($Conversations as $ConversationId => $ConversationData) {
 
@@ -388,7 +390,15 @@ class Skype {
          else          $Class = '';
 
          $Code .= '<div class="tab-pane fade '.$Class.'" id="v-pills-'.$Id. '" data-bs-toggle="tab" role="tabpanel">
-                   <div class="border-bottom h3 pb-3">'.$ConversationData['Name'].'</div>';
+                     <div class="row" style="margin-right: 0px;">
+                        <div class="col">
+                           <div class="row">
+                              <div class="col border-bottom border-dark h3 pb-3 pt-3">'.(!empty ($ConversationData['Name']) ? $ConversationData['Name'] : $ConversationId).'</div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row scroll-list message-list" style="height: 83.5%;">
+                        <div class="col" style="padding-left: 0px;">';
 
          if (empty ($ConversationData['MessageList'])) {
 
@@ -396,21 +406,41 @@ class Skype {
          }
          else {
 
-            foreach ($ConversationData['MessageList'] as $Message) {
+            foreach ($ConversationData['MessageList'] as $i => $Message) {
+
+               $FullName = explode (' ', $Message['Name']);
+
+               if ($CurrentTime != $this->Time->FormatDate ($Message['DMessage'], 'd.m.Y')) {
+
+                  $Code .= '<div class="row" style="align-items: center; margin: 0px;">
+                              <div class="col-sm-5" style="height:1px; background-color:#dee2e6;"></div>
+                              <div class="col-sm-2 text-center text-muted message-label">'.$this->Time->FormatDateToText($Message['DMessage']). '</div>
+                              <div class="col-sm-5" style="height:1px; background-color:#dee2e6;"></div>
+                           </div>';
+                  $CurrentTime = $this->Time->FormatDate ($Message['DMessage'], 'd.m.Y');
+               }
 
                if ($Message['From'] == $ConversationId) {
 
-                  $Code .= '<div class="text-start">'.$Message['Name'].' '.$this->Time->FormatDate ($Message['DMessage'], 'H:i:s'). '</div>
-                            <div class="py-2 px-3"><span style="background: #f8f9fa" class="py-2 px-3">'.$Message['Content']. '</span></div>';
+                  $Code .= '<div class="text-start text-muted message-label">'.(isset ($FullName[0]) ? $FullName[0] : $Message['Name']).' '.$this->Time->FormatDate ($Message['DMessage'], 'H:i').'</div>
+                            <div class="text-start pb-1"><span class="py-2 px-3 d-inline-block rounded text-wrap text-break message" style="background: #f2f6f9">'.$Message['Content'].'</span></div>';
                }
                else {
 
-                  $Code .= '<div class="text-end py-2 px-3"><span class="py-2 px-3" style="background: #e3f2fd">'.$Message['Content']. '</span></div>';
+                  $Code .= '<div class="text-end text-muted message-label">'.$this->Time->FormatDate ($Message['DMessage'], 'H:i').'</div>
+                            <div class="text-end pb-1"><span class="py-2 px-3 d-inline-block rounded text-wrap text-break message" style="background: #e3f2fd">'.$Message['Content'].'</span></div>';
+
+               }
+
+               if (isset ($Limit) && $i >= $Limit) {
+                  break;
                }
             }
          }
 
-         $Code .= '</div>';
+         $Code .= '     </div>
+                     </div>
+                  </div>';
       }
 
       $Code .= '</div></div></div>';
@@ -468,11 +498,11 @@ class Skype {
 
                $this->WriteCode ($this->Conversations);
 
-               echo '<br>Найдено старых сообщений: '.$this->Stat['Exists'].'<br>';
-               echo 'Не найдено старых сообщений: '.$this->Stat['NotFound'].'<br>';
-               echo 'Новых сообщений: '.$this->Stat['NewMessage'].'<br>';
-               echo 'Проигнорировано сообщений: '.$this->Stat['Ignore'].'<br>';
-               echo 'Всего сообщений: '.array_sum ($this->Stat).'<br>';
+//               echo '<br>Найдено старых сообщений: '.$this->Stat['Exists'].'<br>';
+//               echo 'Не найдено старых сообщений: '.$this->Stat['NotFound'].'<br>';
+//               echo 'Новых сообщений: '.$this->Stat['NewMessage'].'<br>';
+//               echo 'Проигнорировано сообщений: '.$this->Stat['Ignore'].'<br>';
+//               echo 'Всего сообщений: '.array_sum ($this->Stat).'<br>';
 
             } else $this->Out->OutError ('Вы загружаете не свой JSON или вы не авторизованы. Работа прекращена.');
          } else $this->Out->OutError ('Ошибка валидации JSON. Работа прекращена.');
