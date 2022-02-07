@@ -21,8 +21,8 @@ if (isset($_GET['IsExport'])) {
    $InputJson = file_get_contents('php://input');
 
    if (isset($InputJson)) {
-
       $Input = json_decode($InputJson);
+      echo 'download/'.$_SESSION['User'].'.'.$Input->format;
       $Controller->ProcessExport($Input->select, $Input->format);
    }
 } else {
@@ -191,47 +191,47 @@ if (isset($_GET['IsExport'])) {
             conversations.format = document.getElementById('ExportFormat').value;
             document.querySelectorAll('input:checked').forEach(nav => conversations.select.push(nav.closest('.d-flex').id));
             conversations = JSON.stringify(conversations);
-            console.log(conversations);
             postJSON(conversations);
          }
 
-         async function postJSON(conversations) {
-            try {
-               const response = await fetch('https://www.wentor.ru/Skype/?IsExport', {
-                     method: 'POST',
-                     body: conversations,
-                     headers: {
-                        'Content-Type': 'application/json'
-                     }
-                  })
-                  .then(pivot => {
-                     mainbutton = document.getElementById('MainButton');
-                     mainbutton.setAttribute('onclick', 'FetchDownload ()');
-                     mainbutton.innerText = 'Скачать';
-                  });
-            } catch (error) {
-               console.error('Ошибка:', error);
-            };
-         }
+         const postJSON = (conversations) => {
+            fetch('https://www.wentor.ru/Skype/?IsExport', {
+                  method: 'POST',
+                  body: conversations,
+                  headers: {
+                     'Content-Type': 'application/json'
+                  }
+            })
+            .then(response => {
+               console.log(response.json());
+            })
+            .then(pivot => {
+               mainbutton = document.getElementById('MainButton');
+               mainbutton.setAttribute('onclick', 'FetchDownload ()');
+               mainbutton.innerText = 'Скачать';
+            })
+            .catch(err => console.error('Ошибка:', error));
+         };
 
          const FetchDownload = () => {
             fetch("https://www.wentor.ru/Skype/download/file.txt")
-               .then(resp => resp.blob())
-               .then(blob => {
+            .then(resp => resp.blob())
+            .then(blob => {
 
-                  const url = window.URL.createObjectURL(blob);
+               const url = window.URL.createObjectURL(blob);
 
-                  const a = document.createElement("a");
-                  a.style.display = "none";
-                  a.href = url;
-                  a.download = "file.txt";
+               const a = document.createElement("a");
+               a.style.display = "none";
+               a.href = url;
+               a.download = "file.txt";
 
-                  document.body.appendChild(a);
-                  a.click();
-                  window.URL.revokeObjectURL(url);
-               })
-               .catch((error) => console.error('Ошибка:', error));
+               document.body.appendChild(a);
+               a.click();
+               window.URL.revokeObjectURL(url);
+            })
+            .catch(err => console.error('Ошибка:', error));
          };
+         
       </script>
 <?
       echo '   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>

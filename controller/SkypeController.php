@@ -39,7 +39,7 @@ class SkypeController {
 
                $_SESSION = ['User' => $this->User,
                    'Conversations' => $this->Conversations];
-               
+
                //var_dump($_SESSION);
                $this->View->WriteCode($this->Conversations);
 
@@ -56,8 +56,9 @@ class SkypeController {
       return true;
    }
 
-   function ProcessExport(array $Select, $Format)
+   function ProcessExport (array $Select, $Format)
    {
+
       switch ($Format) {
          case 'json':
 
@@ -73,7 +74,7 @@ class SkypeController {
             break;
 
          case 'txt':
-            
+
             $Export = "";
 
             foreach ($Select as $Elem) {
@@ -95,7 +96,7 @@ class SkypeController {
             break;
 
          case 'csv':
-            
+
             $Export = "ConversationId;Name;ID;From;Name;Content;Duration;DMessage\n";
 
             foreach ($Select as $Elem) {
@@ -111,8 +112,6 @@ class SkypeController {
             }
             break;
 
-         default:
-            echo 'default';
       }
 
       $ExportFile = fopen ('download/'.$_SESSION['User'].'.'. $Format, 'w');
