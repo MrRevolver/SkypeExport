@@ -12,7 +12,7 @@ class JSON {
       return json_decode ($In);
    }
 
-   function Valid ()                                                          // Проверка целостности JSON
+   function Valid ()                                                              // Проверка целостности JSON
    {
       switch (json_last_error ()) {
 

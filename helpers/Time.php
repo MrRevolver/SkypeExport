@@ -2,44 +2,49 @@
 
 class Time {
 
+   function __construct()
+   {
+      $this->Debug = new Debug ();
+   }
+   
    function GetTimeStamp ($Str, $Format = 'Y.m.d H:i:s')
    {
-   $Day    = 0;
-   $Month  = 0;
-   $Year   = 0;
-   $Hour   = 0;
-   $Minute = 0;
-   $Second = 0;
+      $Day    = 0;
+      $Month  = 0;
+      $Year   = 0;
+      $Hour   = 0;
+      $Minute = 0;
+      $Second = 0;
 
-   switch ($Format) {
+      switch ($Format) {
 
-      case 'd.m.Y':
-         sscanf ($Str, "%2d%*c%2d%*c%4d", $Day, $Month, $Year);
-         break;
+         case 'd.m.Y':
+            sscanf ($Str, "%2d%*c%2d%*c%4d", $Day, $Month, $Year);
+            break;
 
-      case 'Y.m.d':
-         sscanf ($Str, "%4d%*c%2d%*c%2d", $Year, $Month, $Day);
-         break;
+         case 'Y.m.d':
+            sscanf ($Str, "%4d%*c%2d%*c%2d", $Year, $Month, $Day);
+            break;
 
-      case 'd.m.Y H:i:s':
-         sscanf ($Str, "%2d%*c%2d%*c%4d%*c%2d%*c%2d%*c%2d", $Day, $Month, $Year, $Hour, $Minute, $Second);
-         break;
+         case 'd.m.Y H:i:s':
+            sscanf ($Str, "%2d%*c%2d%*c%4d%*c%2d%*c%2d%*c%2d", $Day, $Month, $Year, $Hour, $Minute, $Second);
+            break;
 
-      case 'Y.m.d H:i:s':
-         sscanf ($Str, "%4d%*c%2d%*c%2d%*c%2d%*c%2d%*c%2d", $Year, $Month, $Day, $Hour, $Minute, $Second);
-         break;
+         case 'Y.m.d H:i:s':
+            sscanf ($Str, "%4d%*c%2d%*c%2d%*c%2d%*c%2d%*c%2d", $Year, $Month, $Day, $Hour, $Minute, $Second);
+            break;
 
-      default:
-         die ('Неверный формат даты');
-   }
+         default:
+            die ('Неверный формат даты');
+      }
 
       return mktime ($Hour, $Minute, $Second, $Month, $Day, $Year);
    }
 
    function FormatDate ($Str, $FormatOut = 'd.m.Y', $FormatIn = 'Y.m.d H:i:s')
    {
-   if (is_null ($Str)) return null;
-   return date ($FormatOut, $this->GetTimeStamp ($Str, $FormatIn));
+      if (is_null ($Str)) return null;
+      return date ($FormatOut, $this->GetTimeStamp ($Str, $FormatIn));
    }
 
    function FormatDateToText ($Date, $FormatIn = 'Y.m.d H:i:s', $FormatOut = 'd m Y')

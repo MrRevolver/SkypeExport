@@ -2,7 +2,7 @@
 
 class SkypeModel extends JSON {
 
-   function __construct()
+   function __construct ()
    {
       $this->Time  = new Time  ();
       $this->Debug = new Debug ();
@@ -158,11 +158,11 @@ class SkypeModel extends JSON {
       return null;
    }
 
-   function ProcessConversation ($JsonConversation) 
+   function ProcessConversation ($JsonConversation)
    {
       $Conversation = [];
 
-      if ($this->ConversationValid($JsonConversation)) {                // Если Conversation прошёл проверку
+      if ($this->ConversationValid($JsonConversation)) {                         // Если Conversation прошёл проверку
 
          $Conversation['ConversationId'] = $this->ExplodeSkype($JsonConversation->id);
          $Conversation['Name']           = $JsonConversation->displayName;
@@ -171,7 +171,7 @@ class SkypeModel extends JSON {
 
          $Id_SkypeExcludeState = null;
 
-         if ($Id_SkypeExcludeState != 'Ignore') {                        // Проверяем статус "Не загружать"
+         if ($Id_SkypeExcludeState != 'Ignore') {                                // Проверяем статус "Не загружать"
 
             foreach ($JsonConversation->MessageList as $JsonMessage) {
 
@@ -192,7 +192,7 @@ class SkypeModel extends JSON {
       return false;
    }
 
-   function ProcessMessage ($JsonMessage) 
+   function ProcessMessage ($JsonMessage)
    {
       if ($this->MessageValid ($JsonMessage)) {
 
@@ -209,12 +209,9 @@ class SkypeModel extends JSON {
                         'DMessage'     => $this->DMessage ($JsonMessage->originalarrivaltime, 0),
                         'From'         => $this->ExplodeSkype ($JsonMessage->from)];
 
-            if (substr ($Message['Content'], 0, 9) == '<partlist') {
+            if (substr ($Message['Content'], 0, 9) == '<partlist') $Duration = $this->GetDuration ($Message['Content']);
 
-               $Duration = $this->GetDuration ($Message['Content']);
-            }
-
-             return $Message;
+            return $Message;
          }
       }
 
