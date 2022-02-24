@@ -2,19 +2,14 @@
 
 class File {
 
-   function __construct()
-   {
-      $this->Debug = new Debug ();
-   }
-
-   function CreateFile ($Patch, $Data)
+   public static function CreateFile ($Patch, $Data)
    {
       $File = fopen ($Patch, 'w');
       fwrite ($File, $Data);
       fclose ($File);
    }
 
-   function CreateZip ($Patch, $File)
+   public static function CreateZip ($Patch, $File)
    {
       if (file_exists ($File)) {
 

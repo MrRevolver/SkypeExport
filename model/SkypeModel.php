@@ -1,10 +1,9 @@
 <?
 
-class SkypeModel extends JSON {
+class SkypeModel {
 
    function __construct ()
    {
-      $this->Time  = new Time  ();
       $this->Debug = new Debug ();
    }
 
@@ -131,7 +130,7 @@ class SkypeModel extends JSON {
 
    function DMessage ($Time, $Interval)                                          // Получение даты и времени сообщения. Передайте 0 в $Interval, если нужно только форматирование.
    {
-      $DMessage = new DateTime ($this->Time->FormatDate ($Time, "Y-m-d H:i:s"));
+      $DMessage = new DateTime (Time::FormatDate ($Time, "Y-m-d H:i:s"));
       $DMessage->add (new DateInterval ('PT7H0M0S'));
 
       if ($Interval > 0) {

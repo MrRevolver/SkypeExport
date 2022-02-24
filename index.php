@@ -100,8 +100,8 @@ if (isset ($_GET['Download'])) {
            '         <input type="submit" value="Загрузить сообщения Skype"/>'.
            '      </form>'.
            '      <p class="text-center">'.
-           '         <a href="/instruction.php" target="blank" class="m-3">Инструкция</a>'.
-           '         <a href="/conditions.php" target="blank" class="m-3">Условия использования</a>'.
+           '         <a href="instruction.php" target="blank" class="m-3">Инструкция</a>'.
+           '         <a href="conditions.php" target="blank" class="m-3">Условия использования</a>'.
            '      </p>';
    }
 

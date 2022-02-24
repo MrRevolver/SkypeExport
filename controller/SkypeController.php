@@ -14,16 +14,15 @@ class SkypeController {
       $this->Debug = new Debug ();
       $this->View  = new SkypeView ();
       $this->Model = new SkypeModel ();
-      $this->File  = new File ();
    }
 
    function ProcessExtract ($In)
    {
-      $Json = $this->Model->Decode ($In);
+      $Json = JSON::Decode ($In);
 
       if (!is_null ($Json)) {
 
-         if ($this->Model->Valid ($In)) {
+         if (JSON::Valid ($In)) {
 
             $this->User = $this->Model->ExplodeSkype ($Json->userId);            // Получаем скайп пользователя из JSON
 
@@ -69,7 +68,7 @@ class SkypeController {
                }
             }
 
-            $Export = json_encode ($Export, JSON_UNESCAPED_UNICODE);
+            $Export = JSON::Encode ($Export);
             break;
 
          case 'txt':
@@ -128,7 +127,7 @@ class SkypeController {
             break;
       }
 
-      $this->File->CreateFile ('download/'.$_SESSION['User'].'.'. $Format, $Export);
-      $this->File->CreateZip  ('download/'.$_SESSION['User'].'.zip', 'download/'.$_SESSION['User'].'.'. $Format);
+      File::CreateFile ('download/'.$_SESSION['User'].'.'. $Format, $Export);
+      File::CreateZip  ('download/'.$_SESSION['User'].'.zip', 'download/'.$_SESSION['User'].'.'. $Format);
    }
 }

@@ -1,4 +1,5 @@
 <?
+
 class Debug {
 
    private $IsOn = false;

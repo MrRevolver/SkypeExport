@@ -2,12 +2,7 @@
 
 class Time {
 
-   function __construct()
-   {
-      $this->Debug = new Debug ();
-   }
-   
-   function GetTimeStamp ($Str, $Format = 'Y.m.d H:i:s')
+   public static function GetTimeStamp ($Str, $Format = 'Y.m.d H:i:s')
    {
       $Day    = 0;
       $Month  = 0;
@@ -41,13 +36,13 @@ class Time {
       return mktime ($Hour, $Minute, $Second, $Month, $Day, $Year);
    }
 
-   function FormatDate ($Str, $FormatOut = 'd.m.Y', $FormatIn = 'Y.m.d H:i:s')
+   public static function FormatDate ($Str, $FormatOut = 'd.m.Y', $FormatIn = 'Y.m.d H:i:s')
    {
       if (is_null ($Str)) return null;
-      return date ($FormatOut, $this->GetTimeStamp ($Str, $FormatIn));
+      return date ($FormatOut, self::GetTimeStamp ($Str, $FormatIn));
    }
 
-   function FormatDateToText ($Date, $FormatIn = 'Y.m.d H:i:s', $FormatOut = 'd m Y')
+   public static function FormatDateToText ($Date, $FormatIn = 'Y.m.d H:i:s', $FormatOut = 'd m Y')
    {
       if (is_null ($Date)) return null;
 
@@ -64,7 +59,7 @@ class Time {
       $Month[11] = "Ноября";
       $Month[12] = "Декабря";
 
-      $TimeStamp = $this->GetTimeStamp ($Date, $FormatIn);
+      $TimeStamp = self::GetTimeStamp ($Date, $FormatIn);
 
       $Out = $FormatOut;
       $Out = str_replace ('d', date ('d', $TimeStamp)                  , $Out);

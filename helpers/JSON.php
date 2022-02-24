@@ -2,46 +2,48 @@
 
 class JSON {
 
-   function __construct()
-   {
-      $this->Debug = new Debug ();
-   }
-
-   function Decode ($In)
+   public static function Decode ($In)
    {
       return json_decode ($In);
    }
 
-   function Valid ()                                                              // Проверка целостности JSON
+   public static function Encode ($In)
    {
+      return json_encode ($In, JSON_UNESCAPED_UNICODE);
+   }
+
+   public static function Valid ()                                                              // Проверка целостности JSON
+   {
+      $Debug = new Debug();
+
       switch (json_last_error ()) {
 
          case JSON_ERROR_NONE:
-            $this->Debug->Out ('JSON валиден');
+            $Debug->Out ('JSON валиден');
             return true;
 
          case JSON_ERROR_DEPTH:
-            $this->Debug->Out ('JSON - Достигнута максимальная глубина стека');
+            $Debug->Out ('JSON - Достигнута максимальная глубина стека');
             return false;
 
          case JSON_ERROR_STATE_MISMATCH:
-            $this->Debug->Out ('JSON - Некорректные разряды или несоответствие режимов');
+            $Debug->Out ('JSON - Некорректные разряды или несоответствие режимов');
             return false;
 
          case JSON_ERROR_CTRL_CHAR:
-            $this->Debug->Out ('JSON - Некорректный управляющий символ');
+            $Debug->Out ('JSON - Некорректный управляющий символ');
             return false;
 
          case JSON_ERROR_SYNTAX:
-            $this->Debug->Out ('JSON - Синтаксическая ошибка, некорректный JSON');
+            $Debug->Out ('JSON - Синтаксическая ошибка, некорректный JSON');
             return false;
 
          case JSON_ERROR_UTF8:
-            $this->Debug->Out ('JSON - Некорректные символы UTF-8, возможно неверно закодирован');
+            $Debug->Out ('JSON - Некорректные символы UTF-8, возможно неверно закодирован');
             return false;
 
          default:
-            $this->Debug->Out ('JSON - Неизвестная ошибка');
+            $Debug->Out ('JSON - Неизвестная ошибка');
             return false;
       }
    }
